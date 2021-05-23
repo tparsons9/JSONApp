@@ -9,7 +9,13 @@ client = pymongo.MongoClient('mongodb+srv://Tparsons:Tanner@startingcluster.ktr7
 db = client.TheFirstDatabase
 collection = db.InitialAggregation
 
-app.route('/')
+@app.route("/", methods=['POST'])
+def insert_document():
+    req_data = request.get_json()
+    collection.insert_one(req_data).inserted_id
+    return ('', 204)
+
+@app.route("/")
 def get():
     documents = collection.find()
     response = []
@@ -19,4 +25,4 @@ def get():
     return json.dumps(response)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug = True)
